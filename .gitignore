@@ -1,0 +1,19 @@
+server/node_modules
+client/node_modules
+.DS_Store
+client/build/build.js
+client/build/check-versions.js
+client/build/dev-client.js
+client/build/dev-server.js
+client/build/dev-server.js
+<<<<<<< HEAD
+client/build/build.js
+client/build/build.js
+client/build/check-versions.js
+client/build/dev-client.js
+=======
+*.iml
+.idea/vcs.xml
+.idea/workspace.xml
+>>>>>>> c2a4da3ec70b340c3b9bb613d77ae30231ab1b9c
+server/npm-debug.log
