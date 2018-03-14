@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server rethinkdb",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "server",
+    "rethinkdb",
+    "socket.io"
+  ],
+  "author": "EvgenJin",
+  "license": "ISC"
+}
