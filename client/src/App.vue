@@ -3,13 +3,21 @@
     <h1>start page</h1>
     <h2>{{messages}}</h2>
     <h2>{{text}}</h2>
-        <tr>1<tr>
-        <tr v-for="table in tables" :key="table.id">
-          <td>{{table.id}}</td>
-          <td>{{table.date}}</td>
-          <td>{{table.name}}</td>
-          <td>{{table.message}}</td>
-        </tr>
+  
+ <table style="width:60%">
+  <tr>
+    <th>name</th>
+    <th>message</th>
+    <th>date</th>
+  </tr>
+  <tr v-for="object in objects" :key="object">
+    <!-- <td>{{object.id}}</td> -->
+    <td>{{object.name}}</td>
+    <td>{{object.message}}</td>
+    <td>{{object.date}}</td>
+  </tr>
+</table> 
+
   </div>
 </template>
 
@@ -20,15 +28,15 @@ export default {
     return {
       messages:'',
       text: '',
-      tables: []
+      objects: []
     }
   },
   components: {
     // HelloWorld
   },
   created () {
-    this.get(),
-    this.sum()
+    // this.get()
+    // ,this.sum()
   },
   mounted () {
     this.sum()
@@ -42,15 +50,9 @@ export default {
       })
     },
     sum () {
-      // this.$socket.on('messages',(cont) => {
-        // console.log(cont)
-        //  this.post.id = cont.id
-        //  this.posts.date = cont.date
-        // console.log(this.posts)
-      // })
-      this.$socket.on('messages', function(cont){
-        this.tables = cont          
-        console.log(this.tables)
+      this.$socket.on('messages',data => {
+        this.objects.push(data)
+        // console.log(data)
       })
 
     }
