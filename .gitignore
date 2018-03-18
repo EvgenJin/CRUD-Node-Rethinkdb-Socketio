@@ -17,3 +17,4 @@ client/build/dev-client.js
 .idea/workspace.xml
 >>>>>>> c2a4da3ec70b340c3b9bb613d77ae30231ab1b9c
 server/npm-debug.log
+client/pm2start.json.save

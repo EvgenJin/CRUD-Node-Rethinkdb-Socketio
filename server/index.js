@@ -33,12 +33,13 @@ r.connect(db)
                     });
                 });
             // добавить запись
-            client.on('/messages', (body) => {
+            client.on('messages', (body) => {
                 const {
-                    name, message
+                    name, message, date
                 } = body;
                 const data = {
-                    name, message, date: new Date()
+                    name, message, date
+                    // : new Date()
                 };
                 r.table('messages').insert(data).run(conn);
             });
@@ -62,7 +63,8 @@ r.connect(db)
 
         io.on('connection', function (socket) {
             var now = new Date()
-            console.log('A client is connected!' + now);   
+            // var d = new Date(year, month, day);
+            console.log('A client is connected!');   
         });
 
 

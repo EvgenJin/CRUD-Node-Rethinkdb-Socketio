@@ -11,6 +11,10 @@
     "rethinkdb",
     "socket.io"
   ],
+  "dependencies": {
+    "rethinkdb": "^2.3.3",
+    "socket.io": "^2.0.4"
+  },
   "author": "EvgenJin",
   "license": "ISC"
 }

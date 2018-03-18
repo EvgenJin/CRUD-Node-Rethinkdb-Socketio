@@ -1,61 +1,93 @@
 <template>
   <div id="app">
-    <h1>start page</h1>
-    <h2>{{messages}}</h2>
-    <h2>{{text}}</h2>
-  
- <table style="width:60%">
+  <v-app>
+  <v-content>
+    <add_record></add_record>
+
+  <!-- первая форма -->
+  <!-- <form @submit.prevent="handleSubmit"> -->
+    <!-- <label>Name:<input type="text" v-model="user.name"/></label> -->
+    <!-- <label>message:<input type="number" v-model="user.message"/></label> -->
+    <!-- <label> -->
+    <!-- </label> -->
+    <!-- <label><datepicker></datepicker></label> -->
+    <!-- <label><datepicker v-model="user.date"></datepicker></label> -->
+    <!-- <button type="submit">Submit</button> -->
+  <!-- </form> -->
+
+ <!-- первая таблица -->
+ <!-- <table style="width:60%">
   <tr>
     <th>name</th>
     <th>message</th>
     <th>date</th>
   </tr>
-  <tr v-for="object in objects" :key="object">
-    <!-- <td>{{object.id}}</td> -->
+  <tr v-for="(object,index) in objects" :key="index">
+    <td>{{object.id}}</td>
     <td>{{object.name}}</td>
     <td>{{object.message}}</td>
     <td>{{object.date}}</td>
   </tr>
-</table> 
+</table> -->
 
-  </div>
+  <v-data-table
+    :headers="headers"
+    :items="items"
+    hide-actions
+    class="elevation-1"
+  >
+    <template slot="items" slot-scope="props">
+      <td>{{ props.item.name }}</td>
+      <td class="text-xs-right">{{ props.item.message }}</td>
+      <td class="text-xs-right">{{ props.item.date }}</td>
+    </template>
+  </v-data-table>
+</v-content>  
+</v-app>
+</div>
 </template>
 
 <script>
+import add_record from './components/add_record'
 export default {
   name: 'App',
   data () {
     return {
-      messages:'',
-      text: '',
-      objects: []
+      objects: [],
+      user: {
+        name: '',
+        message: 0,
+        date: ''
+      },
+      headers: [
+          {text: 'name', align: 'center', value: 'name'},
+          {text: 'message', value: 'message',align: 'center' },
+          {text: 'date', value: 'date', align: 'center' },
+        ],
+         items: []
     }
   },
   components: {
-    // HelloWorld
+    add_record
   },
   created () {
-    // this.get()
-    // ,this.sum()
+    //  this.push()
   },
   mounted () {
-    this.sum()
+    this.push()
   },
   methods: {
     get () {
       this.$socket.on('stream',(data) => {
       this.messages = data.title
       this.text = data.text
-      // console.log('test')
       })
     },
-    sum () {
+    push () {
       this.$socket.on('messages',data => {
-        this.objects.push(data)
-        // console.log(data)
+        this.items.push(data)
       })
-
-    }
+    },
   }
 }
 </script>
@@ -65,8 +97,9 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
+  padding: 10px;
 }
 </style>
