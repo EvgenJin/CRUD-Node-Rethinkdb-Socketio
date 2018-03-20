@@ -38,7 +38,7 @@
           prepend-icon="event"
           readonly
         ></v-text-field>
-        <v-date-picker v-model="user.date" no-title scrollable>
+        <v-date-picker v-model="user.date" type="date" no-title scrollable>
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
           <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -70,7 +70,8 @@
         var data = {
           name: this.user.name,
           message: this.user.message,
-          date: this.user.date
+          date: new Date(this.user.date)
+          // date: JSON.stringify(this.user.date)
         }
       this.$socket.emit('messages',data);
       }

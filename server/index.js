@@ -22,7 +22,13 @@ r.connect(db)
                     io.sockets.emit('messages', message);
                 });
             });
-
+        //     r.db('timeline').table("messages")
+        //     .filter(function(post) {
+        //       return 
+        //         post("date").ge('2017-11-13T00:00:00.000Z')
+        //         .and
+        //         (post("date").le('2018-12-01T00:00:00.000Z'));
+        //   })
         // показать все записи
         io.on('connection', (client) => {
             r.table('messages')
