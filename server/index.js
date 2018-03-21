@@ -45,11 +45,9 @@ r.connect(db)
             });
         });
         // отладка
-        io.on('connection', function(socket){
-            socket.emit('stream', {
-                    'title':'первое',
-                    'text':'второе'
-            });
+        io.on('connection', () => {
+            r.table('message')
+            socket.emit('grid', {});
         });        
 
         // server.listen(8000, () => console.log('Заходи на localhost:8000'));
