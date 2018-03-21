@@ -1,30 +1,13 @@
 <template>
   <v-layout row wrap>
-      <v-flex xs3 align-center=true>
-        <!-- перва форма -->
-  <!-- <form @submit.prevent="handleSubmit">
-    <label>Name:<input type="text" v-model="user.name"/></label>
-    <label>message:<input type="number" v-model="user.message"/></label>
-    <button type="submit">Submit</button>
-  </form> -->
+      <!-- <v-flex xs3 align-center=true> -->
 <form>
-    <v-text-field
-      v-model="user.name"
-      label="Name"
-      data-vv-name="name"
-    ></v-text-field>
-    <v-text-field
-      v-model="user.message"
-      label="message"
-      data-vv-name="message"
-    ></v-text-field>
+  <v-text-field v-model="user.name" label="Name" data-vv-name="name"></v-text-field>
+  <v-text-field v-model="user.message" label="message" data-vv-name="message"></v-text-field>
     <v-flex>
-      <v-menu
-        ref="menu"
-        lazy
-        :close-on-content-click="false"
-        v-model="menu"
+      <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" 
         transition="scale-transition"
+<<<<<<< HEAD
         offset-y
         full-width
         :nudge-right="40"
@@ -39,6 +22,13 @@
           readonly
         ></v-text-field>
         <v-date-picker v-model="user.date" type="date" no-title scrollable>
+=======
+        offset-y full-width :nudge-right="40" min-width="290px" :return-value.sync="date">
+        <v-text-field slot="activator"  label="Picker in menu" v-model="user.date"
+          prepend-icon="event" readonly>
+        </v-text-field>
+        <v-date-picker v-model="user.date" no-title scrollable>
+>>>>>>> 591d3981a7b169e39052b5a59b34cb83ff097f73
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
           <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -48,7 +38,7 @@
     <v-btn @click="Submit">submit</v-btn>
     <!-- <v-btn @click="clear">clear</v-btn> -->
   </form>
-      </v-flex>
+      <!-- </v-flex> -->
   </v-layout>
 </template>
 
@@ -71,7 +61,10 @@
           name: this.user.name,
           message: this.user.message,
           date: new Date(this.user.date)
+<<<<<<< HEAD
           // date: JSON.stringify(this.user.date)
+=======
+>>>>>>> 591d3981a7b169e39052b5a59b34cb83ff097f73
         }
       this.$socket.emit('messages',data);
       }
