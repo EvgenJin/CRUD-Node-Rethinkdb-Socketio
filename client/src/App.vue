@@ -2,33 +2,10 @@
   <div id="app">
   <v-app>
   <v-content>
+  <date-picker v-model="time1" lang = "ru" :first-day-of-week="1"></date-picker>
+  <v-btn color="success" v-on:click="push()">Success</v-btn>
+  <p>{{time1}}</p>
     <add_record></add_record>
-
-  <!-- первая форма -->
-  <!-- <form @submit.prevent="handleSubmit"> -->
-    <!-- <label>Name:<input type="text" v-model="user.name"/></label> -->
-    <!-- <label>message:<input type="number" v-model="user.message"/></label> -->
-    <!-- <label> -->
-    <!-- </label> -->
-    <!-- <label><datepicker></datepicker></label> -->
-    <!-- <label><datepicker v-model="user.date"></datepicker></label> -->
-    <!-- <button type="submit">Submit</button> -->
-  <!-- </form> -->
-
- <!-- первая таблица -->
- <!-- <table style="width:60%">
-  <tr>
-    <th>name</th>
-    <th>message</th>
-    <th>date</th>
-  </tr>
-  <tr v-for="(object,index) in objects" :key="index">
-    <td>{{object.id}}</td>
-    <td>{{object.name}}</td>
-    <td>{{object.message}}</td>
-    <td>{{object.date}}</td>
-  </tr>
-</table> -->
 
   <v-data-table
     :headers="headers"
@@ -49,11 +26,14 @@
 
 <script>
 import add_record from './components/add_record'
+import DatePicker from 'vue2-datepicker'
 export default {
   name: 'App',
   data () {
     return {
       objects: [],
+      date1: '2018-03-01T00:00:00.000Z',
+      date2: '2018-05-23T00:00:00.000Z',
       user: {
         name: '',
         message: 0,
@@ -64,30 +44,37 @@ export default {
           {text: 'message', value: 'message',align: 'center' },
           {text: 'date', value: 'date', align: 'center' },
         ],
-         items: []
+         items: [],
+      time1: '2018-01-01T00:00:00.000Z',
+      time2: '2018-12-31T00:00:00.000Z',
+      shortcuts: [
+        {
+          text: 'Today',
+          start: new Date(),
+          end: new Date()
+        }
+      ]         
     }
   },
   components: {
-    add_record
+    add_record,
+    DatePicker
   },
   created () {
-    //  this.push()
   },
   mounted () {
-    this.push()
+    //  this.push()
   },
   methods: {
-    get () {
-      this.$socket.on('stream',(data) => {
-      this.messages = data.title
-      this.text = data.text
-      })
-    },
     push () {
-      this.$socket.on('messages',data => {
+          // console.log(this.time1+1)
+        this.$socket.emit('querry',{date1:this.date1, date2: this.date1+30})
+        this.$socket.on('messages',data => {
         this.items.push(data)
+        // console.log(this.time1 + '---' + this.time2)
+        // console.log(this.time1)
       })
-    },
+    }
   }
 }
 </script>

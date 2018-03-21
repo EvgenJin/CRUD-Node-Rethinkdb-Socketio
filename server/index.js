@@ -25,13 +25,13 @@ r.connect(db)
 
         // показать все записи
         io.on('connection', (client) => {
-            r.table('messages')
-                .run(conn)
-                .then(cursor => {
-                    cursor.each((err, message) => {
-                        io.sockets.emit('messages', message);
-                    });
-                });
+            // r.table('messages')
+            //     .run(conn)
+            //     .then(cursor => {
+            //         cursor.each((err, message) => {
+            //             io.sockets.emit('messages', message);
+            //         });
+            //     });
             // добавить запись
             client.on('messages', (body) => {
                 const {
@@ -43,11 +43,25 @@ r.connect(db)
                 };
                 r.table('messages').insert(data).run(conn);
             });
+
+            client.on('querry',(body) => {
+                const {
+                    date1, date2
+                } = body;
+                r.table('messages').filter(
+                r.row('date').ge(date1)
+                .and(r.row('date').le(date2)))
+                .run(conn)
+                .then(cursor => {
+                    cursor.each((err, message) => {
+                        io.sockets.emit('messages', message);
+                    });
+                });
+                console.log(date1)
+            })
         });
         // отладка
-        io.on('connection', () => {
-            r.table('message')
-            socket.emit('grid', {});
+
         });        
 
         // server.listen(8000, () => console.log('Заходи на localhost:8000'));
@@ -67,7 +81,7 @@ r.connect(db)
 
 
 
-    })
+    
 
 
 
