@@ -57,17 +57,33 @@ r.connect(db)
                 const req = {
                     date1,date2
                 };
+                console.log(date1 + "-----" + date2)
+            //     io.sockets.emit('test',
+            //     [{date: "2018-03-26T00:00:00.000Z"
+            //     , id: "5688f830-7db3-40c6-bbc6-3cad08fa33c0"
+            //     , message: "1"
+            //     , name: "foo"},
+            //     {date: "2018-03-27T00:00:00.000Z"
+            //     , id: "5688f830-7db3-40c6-bbc6-3cad08fa33c0"
+            //     , message: "2"
+            //     , name: "bar"}]                
+            // )
                 r.table('messages')
-                .filter(
-                r.row('date').ge(date1)
-                .and(r.row('date').le(date2)))
+                // .filter(
+                // r.row('date').ge(date1)
+                // .and(r.row('date').le(date2)))
                 .run(conn)
+                // .then(cursor => {
+                    // cursor.each((err, message) => {
+                //         io.sockets.emit('test', message);
+                //         console.log(message)
+                //     });
+                // });
                 .then(cursor => {
-                    cursor.each((err, message) => {
-                        io.sockets.emit('test', message);
-                        console.log(message)
-                    });
-                });
+                    cursor.toArray((err,message) => {
+                        io.sockets.emit('test',message)
+                    })
+                })
             });
             // client.on('querry',(body) => {
             //     const {

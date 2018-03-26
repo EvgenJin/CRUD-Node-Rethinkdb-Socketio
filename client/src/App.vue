@@ -5,10 +5,13 @@
     <!-- <test></test> -->
   <date-picker v-model="date1" lang = "ru" :first-day-of-week="1"></date-picker>
   <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
-  <v-btn color="success" @click="alert()" v-on:click="push()">Success</v-btn>
+  <v-btn color="success" 
+  
+  v-on:click="push()"
+  >Success</v-btn>
   <!-- <main_grid></main_grid> -->
-  <!-- <p>{{time1}}</p>
-  <p>{{time2}}</p> -->
+  <p>{{date1}}</p>
+  <p>{{date2}}</p>
   <!-- <add_record></add_record> -->
   
   <!-- <v-data-table
@@ -53,7 +56,7 @@ export default {
   data () {
     return {
       objects: [],
-      date1: '2018-03-01T00:00:00.000Z',
+      date1: '2018-03-25T00:00:00.000Z',
       date2: '2018-12-31T00:00:00.000Z',
       user: {
         name: '',
@@ -82,11 +85,15 @@ export default {
     test
   },
   created () {
+    this.push()
   },
   mounted () {
-    this.push(),
+    // this.push()
     // this.alert(),
-    this.test()
+    // this.test()
+  },
+  watch: {
+    
   },
   methods: {
     push () {
@@ -94,15 +101,17 @@ export default {
           date1: this.date1,
           date2: this.date2,
         }
-      // this.$socket.emit('test',dates);
-      
-      this.$socket.on('test',(data,dates) => {
+      this.$socket.emit('test',dates);
+      // alert("test")
+      this.$socket.on('test',data => {
         // this.objects = data
         // this.objects.splice()
         // this.objects.push(data)
+        // this.objects.push(data)
         console.log(data)
-        console.log(this.date1 + '!!!!')
+        this.objects = data
       })
+
           // console.log(this.time1+1)
         // this.$socket.emit('querry',{date1:this.time1, date2: this.time2})
         // this.$socket.on('messages',data => {
@@ -112,18 +121,9 @@ export default {
         // console.log(data)
       // })
     },
-    alert () {
-      //   var data = {
-      //     date1: this.date1,
-      //     date2: this.date2,
-      //   }
-      // this.$socket.emit('test',data);
-      // console.log(data)
-
-    },
-    test () {
-        console.log(this.date1 + "----" + this.date2)
-        // this.objects.pop()
+    change () {
+      this.date1 = '2018-03-01T00:00:00.000Z'
+      console.log(this.date1 + "  --  " + this.date2)
     }
   }
 }
