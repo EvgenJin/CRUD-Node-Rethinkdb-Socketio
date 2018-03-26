@@ -13,15 +13,15 @@ const io = socketIO(server);
 r.connect(db)  
     .then(conn => {
         // обновления
-        r.table('messages')
-            .changes()
-            .run(conn)
-            .then(cursor => {
-                cursor.each((err, data) => {
-                    const message = data.new_val;
-                    io.sockets.emit('messages', message);
-                });
-            });
+        // r.table('messages')
+        //     .changes()
+        //     .run(conn)
+        //     .then(cursor => {
+        //         cursor.each((err, data) => {
+        //             const message = data.new_val;
+        //             io.sockets.emit('messages', message);
+        //         });
+        //     });
         //     r.db('timeline').table("messages")
         //     .filter(function(post) {
         //       return 
@@ -31,13 +31,13 @@ r.connect(db)
         //   })
         // показать все записи
         io.on('connection', (client) => {
-            // r.table('messages')
-            //     .run(conn)
-            //     .then(cursor => {
-            //         cursor.each((err, message) => {
-            //             io.sockets.emit('messages', message);
-            //         });
-            //     });
+            r.table('messages')
+                .run(conn)
+                .then(cursor => {
+                    cursor.each((err, message) => {
+                        io.sockets.emit('messages', message);
+                    });
+                });
             // добавить запись
             client.on('messages', (body) => {
                 const {
@@ -50,25 +50,44 @@ r.connect(db)
                 r.table('messages').insert(data).run(conn);
             });
 
-            client.on('querry',(body) => {
+            client.on('test', (body) => {
                 const {
-                    date1, date2
+                    date1,date2
                 } = body;
-                r.table('messages').filter(
+                const req = {
+                    date1,date2
+                };
+                r.table('messages')
+                .filter(
                 r.row('date').ge(date1)
                 .and(r.row('date').le(date2)))
                 .run(conn)
                 .then(cursor => {
                     cursor.each((err, message) => {
-                        io.sockets.emit('messages', message);
+                        io.sockets.emit('test', message);
+                        console.log(message)
                     });
                 });
-                console.log(date1)
-            })
+            });
+            // client.on('querry',(body) => {
+            //     const {
+            //         date1, date2
+            //     } = body;
+            //     r.table('messages')
+            //     .filter(
+            //         r.row('date').ge(date1)
+            //         .and(r.row('date').le(date2)))
+            //             .run(conn)
+            //                 .then(cursor => {
+            //                     cursor.each((err, message) => {
+            //                     io.sockets.emit('messages', message);
+            //                     });
+            //                 });
+            // })
         });
         // отладка
 
-        });        
+                
 
         // server.listen(8000, () => console.log('Заходи на localhost:8000'));
 
@@ -85,12 +104,4 @@ r.connect(db)
             console.log('A client is connected!');   
         });
 
-
-
-    
-
-
-
-
-
-
+    })

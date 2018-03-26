@@ -7,28 +7,11 @@
     <v-flex>
       <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" 
         transition="scale-transition"
-<<<<<<< HEAD
-        offset-y
-        full-width
-        :nudge-right="40"
-        min-width="290px"
-        :return-value.sync="date"
-      >
-        <v-text-field
-          slot="activator"
-          label="Picker in menu"
-          v-model="user.date"
-          prepend-icon="event"
-          readonly
-        ></v-text-field>
-        <v-date-picker v-model="user.date" type="date" no-title scrollable>
-=======
         offset-y full-width :nudge-right="40" min-width="290px" :return-value.sync="date">
         <v-text-field slot="activator"  label="Picker in menu" v-model="user.date"
           prepend-icon="event" readonly>
         </v-text-field>
         <v-date-picker v-model="user.date" no-title scrollable>
->>>>>>> 591d3981a7b169e39052b5a59b34cb83ff097f73
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
           <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -61,10 +44,6 @@
           name: this.user.name,
           message: this.user.message,
           date: new Date(this.user.date)
-<<<<<<< HEAD
-          // date: JSON.stringify(this.user.date)
-=======
->>>>>>> 591d3981a7b169e39052b5a59b34cb83ff097f73
         }
       this.$socket.emit('messages',data);
       }
