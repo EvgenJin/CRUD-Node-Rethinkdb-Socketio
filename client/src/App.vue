@@ -3,22 +3,33 @@
   <v-app>
   <v-content>
   <date-picker v-model="time1" lang = "ru" :first-day-of-week="1"></date-picker>
-  <v-btn color="success" v-on:click="push()">Success</v-btn>
+  <v-btn color="success" v-on:click="send()">Success</v-btn>
   <p>{{time1}}</p>
+  <main_grid></main_grid>
     <add_record></add_record>
 
-  <v-data-table
-    :headers="headers"
-    :items="items"
-    hide-actions
-    class="elevation-1"
-  >
+  <!-- <v-data-table :headers="headers" :items="items" hide-actions class="elevation-1">
     <template slot="items" slot-scope="props">
       <td>{{ props.item.name }}</td>
       <td class="text-xs-right">{{ props.item.message }}</td>
       <td class="text-xs-right">{{ props.item.date }}</td>
     </template>
-  </v-data-table>
+  </v-data-table> -->
+
+ <table style="width:60%">
+ <tr>
+   <th>name</th>
+   <th>message</th>
+   <th>date</th>
+ </tr>
+ <tr v-for="object in objects" :key="object.id">
+   <td>{{object.id}}</td>
+   <td>{{object.name}}</td>
+   <td>{{object.message}}</td>
+   <td>{{object.date}}</td>
+ </tr>
+ </table>
+
 </v-content>  
 </v-app>
 </div>
@@ -27,6 +38,7 @@
 <script>
 import add_record from './components/add_record'
 import DatePicker from 'vue2-datepicker'
+import main_grid from './components/main_grid'
 export default {
   name: 'App',
   data () {
@@ -58,22 +70,45 @@ export default {
   },
   components: {
     add_record,
-    DatePicker
+    DatePicker,
+    main_grid
   },
   created () {
   },
   mounted () {
-    //  this.push()
+    //  this.push(),
+     this.send()
   },
   methods: {
-    push () {
-          // console.log(this.time1+1)
-        this.$socket.emit('querry',{date1:this.date1, date2: this.date1+30})
-        this.$socket.on('messages',data => {
-        this.items.push(data)
-        // console.log(this.time1 + '---' + this.time2)
-        // console.log(this.time1)
+       push () {
+         this.$socket.on('test',data => {
+          //  console.log(dates)
       })
+    },
+    send () {
+        var data = {
+           date1: '2018-01-01T00:00:00.000Z',
+           date2: '2018-12-31T00:00:00.000Z'
+        }
+      this.$socket.emit('test',data)
+      this.$socket.on('test',data => {
+          //  console.log(data)
+      })  
+
+      this.objects = [{ date: "2018-03-31T00:00:00.000Z"
+                      , id: "206959b2-b1fe-43ed-a733-734ec153fc4c"
+                      , message: "2"
+                      , name: "2" },
+{ date: "2018-03-31T00:00:00.000Z"
+                      , id: "206959b2-b1fe-43ed-a733-734ec153fc2c"
+                      , message: "3"
+                      , name: "3" }
+                      ]
+      // console.log(data)
+      // data = JSON.stringify( data )
+      // console.log(data)
+      // this.objects = data
+      console.log(this.objects)                      
     }
   }
 }

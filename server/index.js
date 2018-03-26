@@ -13,18 +13,19 @@ const io = socketIO(server);
 r.connect(db)  
     .then(conn => {
         // обновления
-        r.table('messages')
-            .changes()
-            .run(conn)
-            .then(cursor => {
-                cursor.each((err, data) => {
-                    const message = data.new_val;
-                    io.sockets.emit('messages', message);
-                });
-            });
+        // r.table('messages')
+        //     .changes()
+        //     .run(conn)
+        //     .then(cursor => {
+        //         cursor.each((err, data) => {
+        //             const message = data.new_val;
+        //             io.sockets.emit('messages', message);
+        //         });
+        //     });
 
         // показать все записи
         io.on('connection', (client) => {
+            // все записи
             // r.table('messages')
             //     .run(conn)
             //     .then(cursor => {
@@ -44,21 +45,34 @@ r.connect(db)
                 r.table('messages').insert(data).run(conn);
             });
 
-            client.on('querry',(body) => {
+            client.on('test',(dates) => {
                 const {
-                    date1, date2
-                } = body;
-                r.table('messages').filter(
+                    date1,date2
+                } = dates;
+                console.log(date1 + '-----' + date2)
+                r.table('messages')
+                .filter(
                 r.row('date').ge(date1)
-                .and(r.row('date').le(date2)))
+                .and(r.row('date').le(date2)))                    
                 .run(conn)
                 .then(cursor => {
                     cursor.each((err, message) => {
-                        io.sockets.emit('messages', message);
+                        io.sockets.emit('test',[{name: message.name}]);
+                        console.log(message.name)
                     });
                 });
-                console.log(date1)
             })
+
+                // r.table('messages')
+                // .filter(
+                // r.row('date').ge(date1)
+                // .and(r.row('date').le(date2)))
+                // .run(conn)
+                // .then(cursor => {
+                //     cursor.each((err, message) => {
+                //         io.sockets.emit('test', message);
+                //     });
+                // });
         });
         // отладка
 
