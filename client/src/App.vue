@@ -2,10 +2,10 @@
   <div id="app">
   <v-app>
   <v-content>
-  <date-picker v-model="time1" lang = "ru" :first-day-of-week="1"></date-picker>
+  <date-picker v-model="date1" lang = "ru" :first-day-of-week="1"></date-picker>
+  <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
   <v-btn color="success" v-on:click="send()">Success</v-btn>
-  <p>{{time1}}</p>
-  <main_grid></main_grid>
+   <main_grid></main_grid>
     <add_record></add_record>
 
   <!-- <v-data-table :headers="headers" :items="items" hide-actions class="elevation-1">
@@ -23,7 +23,7 @@
    <th>date</th>
  </tr>
  <tr v-for="object in objects" :key="object.id">
-   <td>{{object.id}}</td>
+   <!-- <td>{{object.id}}</td> -->
    <td>{{object.name}}</td>
    <td>{{object.message}}</td>
    <td>{{object.date}}</td>
@@ -39,13 +39,14 @@
 import add_record from './components/add_record'
 import DatePicker from 'vue2-datepicker'
 import main_grid from './components/main_grid'
+import moment from 'moment'
 export default {
   name: 'App',
   data () {
     return {
       objects: [],
-      date1: '2018-03-01T00:00:00.000Z',
-      date2: '2018-05-23T00:00:00.000Z',
+      date1: '2018-01-01T00:00:00.000Z',
+      date2: '2018-12-31T00:00:00.000Z',
       user: {
         name: '',
         message: 0,
@@ -57,8 +58,6 @@ export default {
           {text: 'date', value: 'date', align: 'center' },
         ],
          items: [],
-      time1: '2018-01-01T00:00:00.000Z',
-      time2: '2018-12-31T00:00:00.000Z',
       shortcuts: [
         {
           text: 'Today',
@@ -87,28 +86,15 @@ export default {
     },
     send () {
         var data = {
-           date1: '2018-01-01T00:00:00.000Z',
-           date2: '2018-12-31T00:00:00.000Z'
+           date1: moment(this.date1).format('YYYY-MM-DD'),
+           date2: moment(this.date2).format('YYYY-MM-DD')
         }
       this.$socket.emit('test',data)
       this.$socket.on('test',data => {
-          //  console.log(data)
+        this.objects = data
+        console.log(data)
       })  
-
-      this.objects = [{ date: "2018-03-31T00:00:00.000Z"
-                      , id: "206959b2-b1fe-43ed-a733-734ec153fc4c"
-                      , message: "2"
-                      , name: "2" },
-{ date: "2018-03-31T00:00:00.000Z"
-                      , id: "206959b2-b1fe-43ed-a733-734ec153fc2c"
-                      , message: "3"
-                      , name: "3" }
-                      ]
-      // console.log(data)
-      // data = JSON.stringify( data )
-      // console.log(data)
-      // this.objects = data
-      console.log(this.objects)                      
+      
     }
   }
 }

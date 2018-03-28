@@ -42,6 +42,7 @@ r.connect(db)
                     name, message, date
                     // : new Date()
                 };
+                console.log(data)
                 r.table('messages').insert(data).run(conn);
             });
 
@@ -56,32 +57,20 @@ r.connect(db)
                 .and(r.row('date').le(date2)))                    
                 .run(conn)
                 .then(cursor => {
-                    cursor.each((err, message) => {
-                        io.sockets.emit('test',[{name: message.name}]);
-                        console.log(message.name)
+                    cursor.toArray((err, message) => {
+                        io.sockets.emit('test',message);
+                        // console.log(message)
                     });
                 });
             })
-
-                // r.table('messages')
-                // .filter(
-                // r.row('date').ge(date1)
-                // .and(r.row('date').le(date2)))
-                // .run(conn)
-                // .then(cursor => {
-                //     cursor.each((err, message) => {
-                //         io.sockets.emit('test', message);
-                //     });
-                // });
         });
         // отладка
-
         });        
 
-        // server.listen(8000, () => console.log('Заходи на localhost:8000'));
+        server.listen(8000, () => console.log('ready on localhost:8000'));
 
-        server.listen(8000);
-        console.log('ready on localhost:8000');
+        // server.listen(8000);
+        // console.log('ready on localhost:8000');
         
         // use socket.io
         // var io = require('socket.io').listen(server);

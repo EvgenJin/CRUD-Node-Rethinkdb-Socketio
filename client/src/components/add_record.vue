@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import moment from 'moment'
   export default {
     data: () => ({
       date: null,
@@ -43,9 +44,11 @@
         var data = {
           name: this.user.name,
           message: this.user.message,
-          date: new Date(this.user.date)
+          date: moment(this.user.date).format('YYYY-MM-DD')
+          // new Date(this.user.date)
         }
       this.$socket.emit('messages',data);
+      console.log(data)
       }
     }
 
