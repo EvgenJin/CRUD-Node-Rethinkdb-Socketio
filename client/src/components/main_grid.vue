@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <!-- <h1>test</h1> -->
   <!-- <v-btn color="success" v-on:click="test()">test</v-btn> -->
  <!-- первая таблица -->
@@ -46,5 +47,26 @@ name: 'App',
 
 
 
+=======
+<div>
+  <h1>Проверка</h1>
+  <h1>{{ message }}</h1>
+</div>  
+</template>
+
+
+
+<script>
+export default {
+  data() {
+    return {
+        message: ''
+    }
+  },      
+  mounted () {
+      this.message = '123'
+  }
+}
+>>>>>>> 33636000f74e1ae8f38b35c621a8acda9aa439d5
 
 </script>

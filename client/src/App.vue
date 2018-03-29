@@ -50,13 +50,13 @@
 import add_record from './components/add_record'
 import DatePicker from 'vue2-datepicker'
 import main_grid from './components/main_grid'
-import test from './components/test'
+import moment from 'moment'
 export default {
   name: 'App',
   data () {
     return {
       objects: [],
-      date1: '2018-03-25T00:00:00.000Z',
+      date1: '2018-01-01T00:00:00.000Z',
       date2: '2018-12-31T00:00:00.000Z',
       user: {
         name: '',
@@ -81,51 +81,32 @@ export default {
   components: {
     add_record,
     DatePicker,
-    main_grid,
-    test
+    main_grid
   },
   created () {
     this.push()
   },
   mounted () {
-    // this.push()
-    // this.alert(),
-    // this.test()
-  },
-  watch: {
-    
+    //  this.push(),
+     this.send()
   },
   methods: {
-    push () {
-        var dates = {
-          date1: this.date1+1,
-          date2: this.date2,
-        }
-        alert(this.date1)
-      this.$socket.emit('test',dates);
-      // alert("test")
-      this.$socket.on('test',data => {
-        // this.objects = data
-        // this.objects.splice()
-        // this.objects.push(data)
-        // this.objects.push(data)
-        console.log(data)
-        this.objects = data
-        // alert(this.date1)
+       push () {
+         this.$socket.on('test',data => {
+          //  console.log(dates)
       })
-
-          // console.log(this.time1+1)
-        // this.$socket.emit('querry',{date1:this.time1, date2: this.time2})
-        // this.$socket.on('messages',data => {
-        // this.items.push(data)
-          // Vue.set(this.objects,'data',data)
-        // console.log(this.time1 + '---' + this.time2)        
-        // console.log(data)
-      // })
     },
-    change () {
-      this.date1 = '2018-03-01T00:00:00.000Z'
-      console.log(this.date1 + "  --  " + this.date2)
+    send () {
+        var data = {
+           date1: moment(this.date1).format('YYYY-MM-DD'),
+           date2: moment(this.date2).format('YYYY-MM-DD')
+        }
+      this.$socket.emit('test',data)
+      this.$socket.on('test',data => {
+        this.objects = data
+        console.log(data)
+      })  
+      
     }
   }
 }
