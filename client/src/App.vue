@@ -3,7 +3,7 @@
   <v-app>
   <v-content>
     <!-- <test></test> -->
-  <date-picker v-model="date1" lang = "ru" :first-day-of-week="1"></date-picker>
+  <date-picker v-model="date1" format = "yyyy-MM-dd" lang = "ru" :first-day-of-week="1"></date-picker>
   <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
   <v-btn color="success" 
   
@@ -98,9 +98,10 @@ export default {
   methods: {
     push () {
         var dates = {
-          date1: this.date1,
+          date1: this.date1+1,
           date2: this.date2,
         }
+        alert(this.date1)
       this.$socket.emit('test',dates);
       // alert("test")
       this.$socket.on('test',data => {
@@ -110,6 +111,7 @@ export default {
         // this.objects.push(data)
         console.log(data)
         this.objects = data
+        // alert(this.date1)
       })
 
           // console.log(this.time1+1)
