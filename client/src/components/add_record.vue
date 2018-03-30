@@ -45,7 +45,6 @@ import moment from 'moment'
           name: this.user.name,
           message: this.user.message,
           date: moment(this.user.date).format('YYYY-MM-DD')
-          // new Date(this.user.date)
         }
       this.$socket.emit('messages',data);
       console.log(data)

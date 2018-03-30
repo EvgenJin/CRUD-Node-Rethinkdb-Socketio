@@ -5,14 +5,13 @@
     <!-- <test></test> -->
   <date-picker v-model="date1" format = "yyyy-MM-dd" lang = "ru" :first-day-of-week="1"></date-picker>
   <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
-  <v-btn color="success" 
-  
-  v-on:click="push()"
+  <v-btn color="success"
+  v-on:click="send()"
   >Success</v-btn>
   <!-- <main_grid></main_grid> -->
   <p>{{date1}}</p>
   <p>{{date2}}</p>
-  <!-- <add_record></add_record> -->
+  <add_record></add_record>
   
   <!-- <v-data-table
     :headers="headers"
@@ -34,7 +33,6 @@
   <th>date</th>
 </tr>
 <tr v-for="(object,index) in objects" :key="index">
-  <td>{{object.id}}</td>
   <td>{{object.name}}</td>
   <td>{{object.message}}</td>
   <td>{{object.date}}</td>
@@ -84,18 +82,15 @@ export default {
     main_grid
   },
   created () {
-    this.push()
+    
+  },
+  updated () {
+    this.send()
   },
   mounted () {
-    //  this.push(),
      this.send()
   },
   methods: {
-       push () {
-         this.$socket.on('test',data => {
-          //  console.log(dates)
-      })
-    },
     send () {
         var data = {
            date1: moment(this.date1).format('YYYY-MM-DD'),
@@ -104,6 +99,7 @@ export default {
       this.$socket.emit('test',data)
       this.$socket.on('test',data => {
         this.objects = data
+        // this.objects.push(data)
         console.log(data)
       })  
       
