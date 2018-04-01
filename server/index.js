@@ -13,26 +13,16 @@ const io = socketIO(server);
 r.connect(db)  
     .then(conn => {
         // обновления
-        // r.table('messages')
-        //     .changes()
-        //     .run(conn)
-        //     .then(cursor => {
-        //         cursor.each((err, data) => {
-        //             const message = data.new_val;
-        //             io.sockets.emit('messages', message);
-        //         });
-        //     });
-
-        // показать все записи
+        r.table('messages')
+            .changes()
+            .run(conn)
+            .then(cursor => {
+                cursor.each((err, data) => {
+                    const message = data.new_val;
+                    io.sockets.emit('test', message);
+                });
+            });
         io.on('connection', (client) => {
-            // все записи
-            // r.table('messages')
-            //     .run(conn)
-            //     .then(cursor => {
-            //         cursor.each((err, message) => {
-            //             io.sockets.emit('messages', message);
-            //         });
-            //     });
             // добавить запись
             client.on('messages', (body) => {
                 const {
@@ -40,11 +30,16 @@ r.connect(db)
                 } = body;
                 const data = {
                     name, message, date
-                    // : new Date()
                 };
                 console.log(data)
                 r.table('messages').insert(data).run(conn);
             });
+
+            client.on('delete',id => {
+                r.table('messages').get(id).delete()
+                .run(conn)
+                console.log(id)
+            }),
 
             client.on('test',(dates) => {
                 const {
@@ -59,7 +54,6 @@ r.connect(db)
                 .then(cursor => {
                     cursor.toArray((err, message) => {
                         io.sockets.emit('test',message);
-                        // console.log(message)
                     });
                 });
             })

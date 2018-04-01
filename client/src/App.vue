@@ -36,6 +36,9 @@
   <td>{{object.name}}</td>
   <td>{{object.message}}</td>
   <td>{{object.date}}</td>
+  <!-- <td>{{index}}</td> -->
+   <v-btn v-on:click="del(object.id,index)"
+   >delete</v-btn>
 </tr>
 </table>
 
@@ -54,8 +57,8 @@ export default {
   data () {
     return {
       objects: [],
-      date1: '2018-01-01T00:00:00.000Z',
-      date2: '2018-12-31T00:00:00.000Z',
+      date1: '2018-01-01',
+      date2: '2018-12-12',
       user: {
         name: '',
         message: 0,
@@ -82,28 +85,43 @@ export default {
     main_grid
   },
   created () {
-    
   },
   updated () {
-    this.send()
+    // this.send()
   },
   mounted () {
-     this.send()
+     this.send(),
+     this.get()
   },
   methods: {
     send () {
-        var data = {
+        var dates = {
            date1: moment(this.date1).format('YYYY-MM-DD'),
            date2: moment(this.date2).format('YYYY-MM-DD')
         }
-      this.$socket.emit('test',data)
+      this.$socket.emit('test',dates)
       this.$socket.on('test',data => {
         this.objects = data
         // this.objects.push(data)
         console.log(data)
-      })  
+      })
       
+    },
+    get () {
+      this.$root.$on('insert',add_data => {
+      this.$socket.emit('messages',add_data);
+      this.objects.push(add_data)
+      console.log(add_data)
+    })
+    },
+    
+    del (id,index) {
+      console.log(id + '--' + index)
+      this.$socket.emit('delete',id) 
+      // this.$delete(this.objects, index)
+      ,this.objects.splice(index,1)
     }
+    
   }
 }
 </script>

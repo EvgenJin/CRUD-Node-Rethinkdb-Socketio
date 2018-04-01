@@ -41,13 +41,14 @@ import moment from 'moment'
     }),
     methods: {
       Submit() {
-        var data = {
+        var add_data = {
           name: this.user.name,
           message: this.user.message,
           date: moment(this.user.date).format('YYYY-MM-DD')
         }
-      this.$socket.emit('messages',data);
-      console.log(data)
+      this.$root.$emit('insert',add_data);
+      // this.$socket.emit('messages',data);
+      // console.log(data)
       }
     }
 
