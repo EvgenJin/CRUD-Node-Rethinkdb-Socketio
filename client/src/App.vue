@@ -3,14 +3,14 @@
   <v-app>
   <v-content>
     <!-- <test></test> -->
-  <date-picker v-model="date1" format = "yyyy-MM-dd" lang = "ru" :first-day-of-week="1"></date-picker>
+  <date-picker v-model="date1" format = "YYYY-MM-DD" lang = "ru" :first-day-of-week="1"></date-picker>
   <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
   <v-btn color="success"
-  v-on:click="send()"
+  v-on:click="get()"
   >Success</v-btn>
   <!-- <main_grid></main_grid> -->
-  <p>{{date1}}</p>
-  <p>{{date2}}</p>
+  <!-- <p>{{date1}}</p> -->
+  <!-- <p>{{date2}}</p> -->
   <add_record></add_record>
   
   <!-- <v-data-table
@@ -37,8 +37,7 @@
   <td>{{object.message}}</td>
   <td>{{object.date}}</td>
   <!-- <td>{{index}}</td> -->
-   <v-btn v-on:click="del(object.id,index)"
-   >delete</v-btn>
+   <v-btn v-on:click="del(object.id,index)">delete</v-btn>
 </tr>
 </table>
 
@@ -57,49 +56,42 @@ export default {
   data () {
     return {
       objects: [],
-      date1: '2018-01-01',
-      date2: '2018-12-12',
-      user: {
-        name: '',
-        message: 0,
-        date: ''
-      },
-      headers: [
-          {text: 'name', align: 'center', value: 'name'},
-          {text: 'message', value: 'message',align: 'center' },
-          {text: 'date', value: 'date', align: 'center' },
-        ],
-         items: [],
-      shortcuts: [
-        {
-          text: 'Today',
-          start: new Date(),
-          end: new Date()
-        }
-      ]         
+      date1: moment().format('YYYY-MM-DD'),
+      date2: moment().add(7, 'days').format('YYYY-MM-DD')
+      // headers: [
+      //     {text: 'name', align: 'center', value: 'name'},
+      //     {text: 'message', value: 'message',align: 'center' },
+      //     {text: 'date', value: 'date', align: 'center' },
+      //   ],
+      //    items: [],
+      // shortcuts: [
+      //   {
+      //     text: 'Today',
+      //     start: new Date(),
+      //     end: new Date()
+      //   }
+      // ]         
     }
   },
   components: {
     add_record,
     DatePicker,
-    main_grid
   },
   created () {
   },
   updated () {
-    // this.send()
   },
   mounted () {
-     this.send(),
-     this.get()
+     this.get(),
+     this.post()
   },
   methods: {
-    send () {
+    get () {
         var dates = {
            date1: moment(this.date1).format('YYYY-MM-DD'),
            date2: moment(this.date2).format('YYYY-MM-DD')
         }
-      this.$socket.emit('test',dates)
+      this.$socket.emit('test',dates);
       this.$socket.on('test',data => {
         this.objects = data
         // this.objects.push(data)
@@ -107,21 +99,19 @@ export default {
       })
       
     },
-    get () {
+    post () {
       this.$root.$on('insert',add_data => {
-      this.$socket.emit('messages',add_data);
-      this.objects.push(add_data)
-      console.log(add_data)
+        this.$socket.emit('messages',add_data);
+        this.objects.push(add_data);
+        console.log(add_data);
     })
     },
     
     del (id,index) {
-      console.log(id + '--' + index)
+      // console.log(id + '--' + index)
       this.$socket.emit('delete',id) 
-      // this.$delete(this.objects, index)
-      ,this.objects.splice(index,1)
+      this.$delete(this.objects, index)
     }
-    
   }
 }
 </script>

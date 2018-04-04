@@ -12,16 +12,16 @@ const io = socketIO(server);
 
 r.connect(db)  
     .then(conn => {
-        // обновления
-        r.table('messages')
-            .changes()
-            .run(conn)
-            .then(cursor => {
-                cursor.each((err, data) => {
-                    const message = data.new_val;
-                    io.sockets.emit('test', message);
-                });
-            });
+        // обновления не включать
+        // r.table('messages')
+        //     .changes()
+        //     .run(conn)
+        //     .then(cursor => {
+        //         cursor.each((err, data) => {
+        //             const message = data.new_val;
+        //             io.sockets.emit('test', message);
+        //         });
+        //     });
         io.on('connection', (client) => {
             // добавить запись
             client.on('messages', (body) => {
