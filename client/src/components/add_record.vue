@@ -38,6 +38,7 @@ import moment from 'moment'
         message: 0,
         date: ''
       }
+      
     }),
     methods: {
       Submit() {

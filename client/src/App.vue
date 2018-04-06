@@ -2,117 +2,31 @@
   <div id="app">
   <v-app>
   <v-content>
-    <!-- <test></test> -->
-  <date-picker v-model="date1" format = "YYYY-MM-DD" lang = "ru" :first-day-of-week="1"></date-picker>
-  <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
-  <v-btn color="success"
-  v-on:click="get()"
-  >Success</v-btn>
-  <!-- <main_grid></main_grid> -->
-  <!-- <p>{{date1}}</p> -->
-  <!-- <p>{{date2}}</p> -->
-  <add_record></add_record>
-  
-  <!-- <v-data-table
-    :headers="headers"
-    :items="items"
-    hide-actions
-    class="elevation-1"
-  >
-    <template slot="items" slot-scope="props">
-      <td>{{ props.item.name }}</td>
-      <td class="text-xs-right">{{ props.item.message }}</td>
-      <td class="text-xs-right">{{ props.item.date }}</td>
-    </template>
-  </v-data-table> -->
-
-<table style="width:60%">
-<tr>
-  <th>name</th>
-  <th>message</th>
-  <th>date</th>
-</tr>
-<tr v-for="(object,index) in objects" :key="index">
-  <td>{{object.name}}</td>
-  <td>{{object.message}}</td>
-  <td>{{object.date}}</td>
-  <!-- <td>{{index}}</td> -->
-   <v-btn v-on:click="del(object.id,index)">delete</v-btn>
-</tr>
-</table>
-
-</v-content>  
+    <main_grid></main_grid>
+    <chart></chart>
+  </v-content>  
 </v-app>
 </div>
 </template>
 
 <script>
-import add_record from './components/add_record'
-import DatePicker from 'vue2-datepicker'
 import main_grid from './components/main_grid'
-import moment from 'moment'
+import chart from './components/chart'
 export default {
   name: 'App',
-  data () {
-    return {
-      objects: [],
-      date1: moment().format('YYYY-MM-DD'),
-      date2: moment().add(7, 'days').format('YYYY-MM-DD')
-      // headers: [
-      //     {text: 'name', align: 'center', value: 'name'},
-      //     {text: 'message', value: 'message',align: 'center' },
-      //     {text: 'date', value: 'date', align: 'center' },
-      //   ],
-      //    items: [],
-      // shortcuts: [
-      //   {
-      //     text: 'Today',
-      //     start: new Date(),
-      //     end: new Date()
-      //   }
-      // ]         
-    }
-  },
   components: {
-    add_record,
-    DatePicker,
+    main_grid,
+    chart
   },
   created () {
   },
   updated () {
   },
   mounted () {
-     this.get(),
-     this.post()
   },
   methods: {
-    get () {
-        var dates = {
-           date1: moment(this.date1).format('YYYY-MM-DD'),
-           date2: moment(this.date2).format('YYYY-MM-DD')
-        }
-      this.$socket.emit('test',dates);
-      this.$socket.on('test',data => {
-        this.objects = data
-        // this.objects.push(data)
-        console.log(data)
-      })
-      
-    },
-    post () {
-      this.$root.$on('insert',add_data => {
-        this.$socket.emit('messages',add_data);
-        this.objects.push(add_data);
-        console.log(add_data);
-    })
-    },
-    
-    del (id,index) {
-      // console.log(id + '--' + index)
-      this.$socket.emit('delete',id) 
-      this.$delete(this.objects, index)
-    }
-  }
+  },
+  
 }
 </script>
 

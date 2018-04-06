@@ -13,15 +13,16 @@ const io = socketIO(server);
 r.connect(db)  
     .then(conn => {
         // обновления не включать
-        // r.table('messages')
-        //     .changes()
-        //     .run(conn)
-        //     .then(cursor => {
-        //         cursor.each((err, data) => {
-        //             const message = data.new_val;
-        //             io.sockets.emit('test', message);
-        //         });
-        //     });
+        r.table('messages')
+            .changes()
+            .run(conn)
+            .then(cursor => {
+                cursor.each((err, data) => {
+                    const message = data.new_val
+                    io.sockets.emit('changes', message)
+                    console.log(message)
+                });
+            });
         io.on('connection', (client) => {
             // добавить запись
             client.on('messages', (body) => {
@@ -49,7 +50,7 @@ r.connect(db)
                 r.table('messages')
                 .filter(
                 r.row('date').ge(date1)
-                .and(r.row('date').le(date2)))                    
+                .and(r.row('date').le(date2)))                   
                 .run(conn)
                 .then(cursor => {
                     cursor.toArray((err, message) => {
