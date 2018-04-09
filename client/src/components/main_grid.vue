@@ -112,7 +112,8 @@ import DatePicker from 'vue2-datepicker'
     },
 
     created () {
-      this.initialize()
+      this.initialize(),
+      this.map()
     },
 
     methods: {
@@ -126,7 +127,12 @@ import DatePicker from 'vue2-datepicker'
         this.items = data
         })
       },
-
+      map () {
+        this.$socket.on('map',data => {
+          console.log(data.messages)
+          console.log(data.dates)
+        })
+      },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)

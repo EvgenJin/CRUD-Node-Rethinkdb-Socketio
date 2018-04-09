@@ -20,7 +20,7 @@ r.connect(db)
         //         cursor.each((err, data) => {
         //             const message = data.new_val
         //             io.sockets.emit('changes', message)
-        //             console.log(message)
+
         //         });
         //     });
         io.on('connection', (client) => {
@@ -32,29 +32,43 @@ r.connect(db)
                 const data = {
                     name, message, date
                 };
-                console.log(data)
                 r.table('messages').insert(data).run(conn);
             });
 
             client.on('delete',id => {
                 r.table('messages').get(id).delete()
                 .run(conn)
-                console.log(id)
             }),
 
              r.table('messages')
             .run(conn)
             .then(cursor => {
-                cursor.toArray((err, message) => {
-                    console.log(message)
+                cursor.toArray((err, data) => {
+                    let dates = data.map(function (date, index, array) {
+                        return date.date;                      
+                   });
+                   let messages = data.map(function (message, index, array) {
+                    return message.message;                      
+                  });
+                   data = {
+                    dates, messages
+                   }
+                    io.sockets.emit('map',data)
                 });
             });
+
+            // var numbers = [{date:'01.01.2018',message:'1'},{date:'01.02.2018',message:'2'}];
+        
+            // var task_names = numbers.map(function (number, index, array) {
+            //      return number.date;
+            // });
+
 
             client.on('test',(dates) => {
                 const {
                     date1,date2
                 } = dates;
-                console.log(date1 + '-----' + date2)
+
                 r.table('messages')
                 .filter(
                 r.row('date').ge(date1)
