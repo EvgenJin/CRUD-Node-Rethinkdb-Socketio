@@ -28,7 +28,7 @@
               </v-date-picker>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="Message (g)" v-model="editedItem.message"></v-text-field>
+                <v-text-field input type="number" label="Message (g)" v-model="editedItem.message"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -77,9 +77,9 @@ import DatePicker from 'vue2-datepicker'
       date1: moment().format('YYYY-MM-DD'),
       date2: moment().add(7, 'days').format('YYYY-MM-DD'),
       headers: [
-        {text: 'name',sortable: false,value: 'name'},
+        { text: 'name',sortable: false,value: 'name'},
         { text: 'date', value: 'date' },
-        { text: 'message', value: 'message' },
+        { text: 'message', value: 'message'},
         { text: 'Actions', value: 'name', sortable: false }
       ],
       items: [],
@@ -87,35 +87,31 @@ import DatePicker from 'vue2-datepicker'
       editedItem: {
         name: '',
         date: '',
-        message: ''
+        message: 0
       },
       defaultItem: {
         name: '',
         date: '',
-        message: ''
+        message: 0
       }
     }),
     components: {
     DatePicker
   },
-
     computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
       }
     },
-
     watch: {
       dialog (val) {
         val || this.close()
       }
     },
-
     created () {
       this.initialize(),
       this.map()
     },
-
     methods: {
       initialize () {
         var dates = {
@@ -129,8 +125,8 @@ import DatePicker from 'vue2-datepicker'
       },
       map () {
         this.$socket.on('map',data => {
-          console.log(data.messages)
-          console.log(data.dates)
+          // console.log(data.messages)
+          // console.log(data.dates)
         })
       },
       editItem (item) {
@@ -158,7 +154,7 @@ import DatePicker from 'vue2-datepicker'
         } else {
         var add_data = {
           name: this.editedItem.name,
-          message: this.editedItem.message,
+          message: Number(this.editedItem.message),
           date: moment(this.editedItem.date).format('YYYY-MM-DD')
         }
         this.$socket.emit('messages',add_data)
