@@ -125,6 +125,7 @@ import DatePicker from 'vue2-datepicker'
         this.$socket.emit('test',dates);
         this.$socket.on('test',data => {
         this.items = data
+        this.$root.$emit('for_chart',data);
         })
       },
       map () {
