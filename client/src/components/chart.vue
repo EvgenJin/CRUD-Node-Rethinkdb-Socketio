@@ -17,6 +17,11 @@ export default {
   name: 'app',
   components: {
     LineExample
+  },
+  methods: {
+    test() {
+      
+    }
   }
 }
 </script>
