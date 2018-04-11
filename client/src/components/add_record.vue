@@ -20,7 +20,7 @@
     </v-flex>
     <v-btn @click="Submit">submit</v-btn>
     <!-- <v-btn @click="clear">clear</v-btn> -->
-  </form>
+</form>
       <!-- </v-flex> -->
   </v-layout>
 </template>

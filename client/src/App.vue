@@ -1,11 +1,11 @@
 <template>
   <div id="app">
   <v-app>
-  <v-content>
+   <v-content>
     <main_grid></main_grid>
     <chart></chart>
-  </v-content>  
-</v-app>
+   </v-content>  
+  </v-app>
 </div>
 </template>
 
@@ -25,8 +25,7 @@ export default {
   mounted () {
   },
   methods: {
-  },
-  
+  }
 }
 </script>
 
@@ -38,6 +37,5 @@ export default {
   /* text-align: center; */
   color: #2c3e50;
   /* margin-top: 60px; */
-  padding: 10px;
 }
 </style>

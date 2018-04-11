@@ -3,7 +3,6 @@
   <date-picker v-model="date1" format = "YYYY-MM-DD" lang = "ru" :first-day-of-week="1"></date-picker>
   <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
   <v-btn color="success" v-on:click="initialize()">Success</v-btn>
-
     <v-dialog v-model="dialog" max-width="500px">
       <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
       <!-- форма добавления -->
@@ -14,21 +13,26 @@
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md12>
                 <v-text-field label="Name" v-model="editedItem.name"></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md4>
-                <!-- <v-text-field label="Date" v-model="editedItem.date"></v-text-field> -->
-              <v-text-field slot="activator"  label="Picker in menu" v-model="editedItem.date"
-                prepend-icon="event" readonly>
-              </v-text-field>
-              <v-date-picker v-model="editedItem.date" no-title scrollable>
-                <!-- <v-btn flat color="primary" @click="menu = false">Cancel</v-btn> -->
-                <!-- <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn> -->
-              </v-date-picker>
+              <v-flex>
+                <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" 
+                      transition="scale-transition" offset-y full-width :nudge-right="40" 
+                      min-width="290px">
+                  <v-text-field slot="activator"  label="Picker in menu" 
+                                v-model="editedItem.date"
+                                prepend-icon="event" readonly>
+                  </v-text-field>
+                  <v-date-picker v-model="editedItem.date" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click="$refs.menu.save(editedItem.date)">OK</v-btn>
+                  </v-date-picker>
+                </v-menu>
               </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field input type="number" label="Message (g)" v-model="editedItem.message"></v-text-field>
+              <v-flex xs12 sm6 md12>
+                <v-text-field label="Message" v-model="editedItem.message"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -51,7 +55,6 @@
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.date }}</td>
         <td>{{ props.item.message }}</td>
-        <!-- <td>{{ props.item.id}}</td> -->
         <td>
           <v-btn icon class="mx-0" @click="editItem(props.item)">
             <v-icon color="teal">edit</v-icon>
@@ -74,6 +77,7 @@ import DatePicker from 'vue2-datepicker'
   export default {
     data: () => ({
       dialog: false,
+      menu: false,
       date1: moment().format('YYYY-MM-DD'),
       date2: moment().add(7, 'days').format('YYYY-MM-DD'),
       headers: [
