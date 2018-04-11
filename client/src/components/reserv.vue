@@ -60,7 +60,7 @@ export default {
         this.$socket.emit('messages',add_data);
         this.objects.push(add_data);
     })
-    },   
+    },
     del (id,index) {
       // console.log(id + '--' + index)
       this.$socket.emit('delete',id) 

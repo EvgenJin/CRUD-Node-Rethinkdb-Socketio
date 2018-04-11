@@ -40,22 +40,22 @@ r.connect(db)
                 .run(conn)
             }),
             // график тест
-            r.table('messages')
-            .run(conn)
-            .then(cursor => {
-                cursor.toArray((err, data) => {
-                    let dates = data.map(function (date, index, array) {
-                        return date.date;                      
-                   });
-                   let messages = data.map(function (message, index, array) {
-                    return message.message;                      
-                  });
-                   data = {
-                    dates, messages
-                   }
-                    io.sockets.emit('map',data)
-                });
-            });
+            // r.table('messages')
+            // .run(conn)
+            // .then(cursor => {
+            //     cursor.toArray((err, data) => {
+            //         let dates = data.map(function (date, index, array) {
+            //             return date.date;                      
+            //        });
+            //        let messages = data.map(function (message, index, array) {
+            //         return message.message;                     
+            //       });
+            //        data = {
+            //         dates, messages
+            //        }
+            //         io.sockets.emit('map',data)
+            //     });
+            // });
             // фильтр основной
             client.on('test',(dates) => {
                 const {
@@ -64,7 +64,7 @@ r.connect(db)
                 r.table('messages')
                 .filter(
                 r.row('date').ge(date1)
-                .and(r.row('date').le(date2)))                   
+                .and(r.row('date').le(date2)))
                 .run(conn)
                 .then(cursor => {
                     cursor.toArray((err, message) => {
