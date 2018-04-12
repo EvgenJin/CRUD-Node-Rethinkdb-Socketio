@@ -147,6 +147,14 @@ import DatePicker from 'vue2-datepicker'
       save () {
         if (this.editedIndex > -1) {
           Object.assign(this.items[this.editedIndex], this.editedItem)
+          var edit_data = {
+            id: this.editedItem.id,
+            name: this.editedItem.name,
+            message: this.editedItem.message,
+            date: this.editedItem.date
+          }
+            this.$socket.emit('update',edit_data)
+            console.log(edit_data)
         } else {
         var add_data = {
           name: this.editedItem.name,

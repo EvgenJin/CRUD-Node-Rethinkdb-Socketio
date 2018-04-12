@@ -36,6 +36,16 @@ r.connect(db)
                 r.table('messages').get(id).delete()
                 .run(conn)
             }),
+            // -----------изменить запись---------------
+            client.on('update',edit_data => {
+                r.table('messages').get(edit_data.id).update({
+                    name: edit_data.name,
+                    message:edit_data.message,
+                    date:edit_data.date
+                })
+                .run(conn)
+                console.log(edit_data.date)
+            }),
             // -----------получить данные---------------
             client.on('test',(dates) => {
                 const {
