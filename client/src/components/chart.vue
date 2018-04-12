@@ -3,7 +3,7 @@
     <div class="container">
       <div class="Chart__list">
         <div class="Chart">
-          <h2>Linechart</h2>
+          <h2>График</h2>
           <line-example></line-example>
         </div>
       </div>

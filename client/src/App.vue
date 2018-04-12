@@ -17,14 +17,6 @@ export default {
   components: {
     main_grid,
     chart
-  },
-  created () {
-  },
-  updated () {
-  },
-  mounted () {
-  },
-  methods: {
   }
 }
 </script>

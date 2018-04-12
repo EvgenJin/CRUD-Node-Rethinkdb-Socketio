@@ -1,10 +1,11 @@
 <template>
   <div>
+  <!-- фильтр дат   -->
   <date-picker v-model="date1" format = "YYYY-MM-DD" lang = "ru" :first-day-of-week="1"></date-picker>
   <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
-  <v-btn color="success" v-on:click="initialize()">Success</v-btn>
+  <v-btn color="success" v-on:click="initialize()">Фильтровать</v-btn>
     <v-dialog v-model="dialog" max-width="500px">
-      <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
+      <v-btn color="primary" dark slot="activator" class="mb-2">Добавить запись</v-btn>
       <!-- форма добавления -->
       <v-card>
         <v-card-title>
@@ -60,7 +61,7 @@
             <v-icon color="teal">edit</v-icon>
           </v-btn>
           <v-btn icon class="mx-0" @click="deleteItem(props.item, props.item.id)">
-            <v-icon color="pink">delete</v-icon>
+            <v-icon color="red">delete</v-icon>
           </v-btn>
         </td>
       </template>
@@ -81,10 +82,10 @@ import DatePicker from 'vue2-datepicker'
       date1: moment().format('YYYY-MM-DD'),
       date2: moment().add(7, 'days').format('YYYY-MM-DD'),
       headers: [
-        { text: 'name',sortable: false,value: 'name'},
-        { text: 'date', value: 'date' },
-        { text: 'message', value: 'message'},
-        { text: 'Actions', value: 'name', sortable: false }
+        { text: 'name',value: 'name'},
+        { text: 'date',value: 'date' },
+        { text: 'message',value: 'message'},
+        { text: 'Actions',value: 'name', sortable: false }
       ],
       items: [],
       editedIndex: -1,
@@ -113,8 +114,7 @@ import DatePicker from 'vue2-datepicker'
       }
     },
     created () {
-      this.initialize(),
-      this.map()
+      this.initialize()
     },
     methods: {
       initialize () {
@@ -128,23 +128,15 @@ import DatePicker from 'vue2-datepicker'
         this.$root.$emit('for_chart',data);
         })
       },
-      map () {
-        this.$socket.on('map',data => {
-          // console.log(data.messages)
-          // console.log(data.dates)
-        })
-      },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
-
       deleteItem (item,id) {
         const index = this.items.indexOf(item)
         confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1) && this.$socket.emit('delete',id)
       },
-
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -152,7 +144,6 @@ import DatePicker from 'vue2-datepicker'
           this.editedIndex = -1
         }, 300)
       },
-
       save () {
         if (this.editedIndex > -1) {
           Object.assign(this.items[this.editedIndex], this.editedItem)
