@@ -20,6 +20,38 @@ r.connect(db)
         //             io.sockets.emit('changes', message)
         //         });
         //     });
+        io.on('connection', (socket) => {
+            // r.table('messages')
+            // .changes()
+            // .run(conn)
+            
+            r.table('messages')
+            .changes()
+            .filter(r.row('old_val').eq(null))
+            .run(conn)
+            .then(cursor => {
+                cursor.each((err,data) => {
+                    const message = data.old_val
+                    console.log(message)
+                })
+            })
+            // .then((chgs)=>{
+                // console.log(chgs)
+            // })
+
+
+            // .then((chgs) => {
+            //     // const message = chgs.new_val
+            //     console.log(chgs)
+            // })
+            // .then(cursor => {
+                // cursor.each((err, data) => {
+                    // const message = data.new_val
+                    // io.sockets.emit('changes', message)
+                    // console.log(message)
+                // });
+            });
+        
         io.on('connection', (client) => {
         // -----------добавить запись---------------
             client.on('messages', (body) => {
@@ -30,6 +62,7 @@ r.connect(db)
                     name, message, date
                 };
                 r.table('messages').insert(data).run(conn);
+                console.log(1)
             });
             // -----------удалить запись---------------
             client.on('delete',id => {

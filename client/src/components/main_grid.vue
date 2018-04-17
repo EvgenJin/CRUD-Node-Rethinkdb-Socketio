@@ -128,6 +128,11 @@ import DatePicker from 'vue2-datepicker'
         this.$root.$emit('for_chart',data);
         })
       },
+      get_changes() {
+        this.$socket.on('changes',data => {
+          console.log(data)
+        })
+      },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
@@ -154,7 +159,7 @@ import DatePicker from 'vue2-datepicker'
             date: this.editedItem.date
           }
             this.$socket.emit('update',edit_data)
-            console.log(edit_data)
+            // console.log(edit_data)
         } else {
         var add_data = {
           name: this.editedItem.name,
@@ -163,7 +168,7 @@ import DatePicker from 'vue2-datepicker'
         }
         this.$socket.emit('messages',add_data)
         this.items.push(add_data)
-          console.log(add_data)
+          // console.log(add_data)
         }
         this.close()
       }
