@@ -60,6 +60,12 @@ r.connect(db)
                         io.sockets.emit('test',message);
                     });
                 });
+                r.table('messages')
+                .sum('message')
+                .run(conn)
+                .then((sum) => {
+                    io.sockets.emit('sum',sum)
+                })
             })
         });
     });   

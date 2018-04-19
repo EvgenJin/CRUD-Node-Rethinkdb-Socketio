@@ -46,15 +46,15 @@
       </v-card>
     </v-dialog>
     <!-- таблица -->
-    <v-data-table
+    <v-data-table 
       :headers="headers"
       :items="items"
-      hide-actions
-      class="elevation-1"
+      hide-actions      
+      class="elevation-9  text-xs-left"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.name }}</td>
         <td>{{ props.item.date }}</td>
+        <td>{{ props.item.name }}</td>        
         <td>{{ props.item.message }}</td>
         <td>
           <v-btn icon class="mx-0" @click="editItem(props.item)">
@@ -69,6 +69,11 @@
         <v-btn color="primary" @click="initialize">Reset</v-btn>
       </template>
     </v-data-table>
+
+      <v-flex xs1 sm1 md1>
+        <v-text-field readonly box label="Сумма" v-model="summa"></v-text-field>
+      </v-flex>
+
   </div>
 </template>
 
@@ -82,12 +87,13 @@ import DatePicker from 'vue2-datepicker'
       date1: moment().format('YYYY-MM-DD'),
       date2: moment().add(7, 'days').format('YYYY-MM-DD'),
       headers: [
-        { text: 'name',value: 'name'},
         { text: 'date',value: 'date' },
+        { text: 'name',value: 'name'},
         { text: 'message',value: 'message'},
         { text: 'Actions',value: 'name', sortable: false }
       ],
       items: [],
+      summa: 12,
       editedIndex: -1,
       editedItem: {
         name: '',
@@ -127,12 +133,15 @@ import DatePicker from 'vue2-datepicker'
         this.items = data
         this.$root.$emit('for_chart',data);
         })
+        this.$socket.on('sum',sum => {
+          this.summa = sum
+          console.log(sum)
+        })
       },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
-        this.initialize ()
       },
       deleteItem (item,id) {
         const index = this.items.indexOf(item)
@@ -140,13 +149,6 @@ import DatePicker from 'vue2-datepicker'
         // && this.items.splice(index, 1) 
         && this.$socket.emit('delete',id)
         this.initialize ()
-      },
-      close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
       },
       save () {
         if (this.editedIndex > -1) {
@@ -157,21 +159,28 @@ import DatePicker from 'vue2-datepicker'
             message: this.editedItem.message,
             date: this.editedItem.date
           }
-            // this.$socket.emit('update',edit_data)
-            // console.log(edit_data)
+            this.$socket.emit('update',edit_data)
+            this.initialize ()
         } else {
-        var add_data = {
-          name: this.editedItem.name,
-          message: Number(this.editedItem.message),
-          date: moment(this.editedItem.date).format('YYYY-MM-DD')
-        }
-        this.$socket.emit('messages',add_data)
-        // this.items.push(add_data)
-        this.$root.$emit('update');
-        this.initialize ()
+                var add_data = {
+                  name: this.editedItem.name,
+                  message: Number(this.editedItem.message),
+                  date: moment(this.editedItem.date).format('YYYY-MM-DD')
+                }
+                this.$socket.emit('messages',add_data)
+                // this.items.push(add_data)
+                this.$root.$emit('update');
+                this.initialize ()
         }
         this.close()
-      }
+      },
+        close () {
+        this.dialog = false
+        setTimeout(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        }, 300)
+      },
     }
   }
 </script>
