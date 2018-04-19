@@ -128,19 +128,18 @@ import DatePicker from 'vue2-datepicker'
         this.$root.$emit('for_chart',data);
         })
       },
-      get_changes() {
-        this.$socket.on('changes',data => {
-          console.log(data)
-        })
-      },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
+        this.initialize ()
       },
       deleteItem (item,id) {
         const index = this.items.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1) && this.$socket.emit('delete',id)
+        confirm('Are you sure you want to delete this item?') 
+        // && this.items.splice(index, 1) 
+        && this.$socket.emit('delete',id)
+        this.initialize ()
       },
       close () {
         this.dialog = false
@@ -158,7 +157,7 @@ import DatePicker from 'vue2-datepicker'
             message: this.editedItem.message,
             date: this.editedItem.date
           }
-            this.$socket.emit('update',edit_data)
+            // this.$socket.emit('update',edit_data)
             // console.log(edit_data)
         } else {
         var add_data = {
@@ -167,8 +166,9 @@ import DatePicker from 'vue2-datepicker'
           date: moment(this.editedItem.date).format('YYYY-MM-DD')
         }
         this.$socket.emit('messages',add_data)
-        this.items.push(add_data)
-          // console.log(add_data)
+        // this.items.push(add_data)
+        this.$root.$emit('update');
+        this.initialize ()
         }
         this.close()
       }
