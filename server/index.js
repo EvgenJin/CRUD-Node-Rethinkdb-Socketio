@@ -60,7 +60,7 @@ r.connect(db)
                         io.sockets.emit('test',message);
                     });
                 });
-                r.table('messages')
+                r.table('messages').filter(r.row('date').ge(date1).and(r.row('date').le(date2)))
                 .sum('message')
                 .run(conn)
                 .then((sum) => {

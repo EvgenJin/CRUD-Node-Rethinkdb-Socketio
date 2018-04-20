@@ -3,9 +3,9 @@
   <!-- фильтр дат   -->
   <date-picker v-model="date1" format = "YYYY-MM-DD" lang = "ru" :first-day-of-week="1"></date-picker>
   <date-picker v-model="date2" lang = "ru" :first-day-of-week="1"></date-picker>
-  <v-btn color="success" v-on:click="initialize()">Фильтровать</v-btn>
+  <v-btn fab dark color="indigo" v-on:click="initialize()"><v-icon dark>list</v-icon></v-btn>
     <v-dialog v-model="dialog" max-width="500px">
-      <v-btn color="primary" dark slot="activator" class="mb-2">Добавить запись</v-btn>
+      <v-btn fab dark color="indigo" slot="activator" class="mb-2"> <v-icon dark>add</v-icon></v-btn>
       <!-- форма добавления -->
       <v-card>
         <v-card-title>
@@ -69,11 +69,9 @@
         <v-btn color="primary" @click="initialize">Reset</v-btn>
       </template>
     </v-data-table>
-
-      <v-flex xs1 sm1 md1>
+      <v-flex xs2 sm2 md1>
         <v-text-field readonly box label="Сумма" v-model="summa"></v-text-field>
       </v-flex>
-
   </div>
 </template>
 
