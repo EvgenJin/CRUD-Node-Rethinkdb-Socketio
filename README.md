@@ -1,5 +1,5 @@
 # REVN_project
-CRUD project with use Nodejs, Express, Rethinkdb, Vue and Socket.io
+Basic CRUD project with use Nodejs, Express, Rethinkdb, Vue and Socket.io
 
 Start server
 in server folder "node index.js"
