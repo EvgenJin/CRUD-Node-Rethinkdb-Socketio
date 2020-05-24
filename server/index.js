@@ -61,7 +61,9 @@ r.connect(db)
                     });
                 });
                 r.table('messages').filter(r.row('date').ge(date1).and(r.row('date').le(date2)))
-                .sum('message')
+                .sum(function (value){
+                  return value.args[0].data;
+                })
                 .run(conn)
                 .then((sum) => {
                     io.sockets.emit('sum',sum)
