@@ -15,7 +15,7 @@
   "dependencies": {
     "nodemon": "^1.17.2",
     "rethinkdb": "^2.3.3",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.5.0"
   },
   "author": "EvgenJin",
   "license": "ISC"
